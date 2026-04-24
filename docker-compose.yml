@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: doutor_ia_backend
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      UPLOAD_DIR: /data/uploads
+      SPRING_DATASOURCE_URL: jdbc:sqlite:/app/data/doutor_ia.db
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/data/uploads
+      - sqlite_data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health 2>/dev/null || curl -sf http://localhost:8080/api/symptoms?q=a || exit 0"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+    container_name: doutor_ia_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  uploads_data:
+  sqlite_data:
