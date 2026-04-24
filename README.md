@@ -63,7 +63,7 @@ Backend: `http://localhost:8080` · Frontend (se adicionado): `http://localhost:
 
 ## Funcionalidades
 
-- Cadastro de pacientes com dados clínicos
+- Cadastro de paciente com dados clínicos
 - Avaliação de sintomas com intensidade, duração e localização
 - Upload de exames (JPG, PNG, PDF até 10 MB, máx. 5 arquivos)
 - Análise por IA (Gemini) com diagnósticos, CID, confiança e gravidade
